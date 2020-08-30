@@ -20,6 +20,7 @@ export class Auth {
             let stat: String = ''
 
             if(err) {
+                console.error(err)
                 stat = 'CanNotConnectException'
             }
             let parsedResult: any = JSON.parse(body)
@@ -29,7 +30,7 @@ export class Auth {
                 this.userData = parsedResult
                 stat = 'Success'
             } else {
-                stat = 'CanNotConnectException'
+                stat = error
             }
 
             callback(stat)

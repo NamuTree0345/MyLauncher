@@ -20,6 +20,7 @@ class Auth {
         }, (err, res, body) => {
             let stat = '';
             if (err) {
+                console.error(err);
                 stat = 'CanNotConnectException';
             }
             let parsedResult = JSON.parse(body);
@@ -30,7 +31,7 @@ class Auth {
                 stat = 'Success';
             }
             else {
-                stat = 'CanNotConnectException';
+                stat = error;
             }
             callback(stat);
         });

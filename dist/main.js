@@ -30,6 +30,8 @@ function openWindow() {
     window = new electron_1.BrowserWindow({
         height: 741,
         width: 1271,
+        minWidth: 600,
+        minHeight: 682,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             enableRemoteModule: false
@@ -53,7 +55,12 @@ electron_1.ipcMain.on('login', (event, email, password) => {
     const status = auth_class.GetAuthenticateRes(email, password, (status) => {
         if (status === 'Success') {
             const userData = auth_class.userData;
-            electron_1.dialog.showMessageBoxSync({ message: '안녕하세요! ' + userData.selectedProfile.name + '님!' });
+            electron_1.dialog.showMessageBoxSync({ message: '안녕하세요! ' + userData.selectedProfile.name + '님!', title: 'MyLauncher' });
+            //window.setPreload 
+            window.loadFile('./launcher.html');
+            if (dev) {
+                window.loadFile('../launcher.html');
+            }
             return;
         }
         else if (status === 'CanNotConnectException') {

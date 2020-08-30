@@ -21,6 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const path = __importStar(require("path"));
+const auth = __importStar(require("./backend/auth"));
 // production = false
 // dev = true
 const dev = true;
@@ -48,4 +49,26 @@ electron_1.app.on('window-all-closed', function () {
         electron_1.app.quit();
 });
 electron_1.ipcMain.on('login', (event, email, password) => {
+    const auth_class = new auth.Auth();
+    const status = auth_class.GetAuthenticateRes(email, password, (status) => {
+        if (status === 'Success') {
+            const userData = auth_class.userData;
+            electron_1.dialog.showMessageBoxSync({ message: '안녕하세요! ' + userData.selectedProfile.name + '님!' });
+            return;
+        }
+        else if (status === 'CanNotConnectException') {
+            electron_1.dialog.showErrorBox('오류', '모장 인증 서버에 접속할 수 없습니다.');
+        }
+        else if (status === 'ForbiddenOperationException') {
+            electron_1.dialog.showErrorBox('오류', '이메일이나 비밀번호가 틀렸습니다.');
+        }
+        else if (status === 'Unknown') {
+            electron_1.dialog.showErrorBox('오류', '알 수 없는 런처 내부 오류가 발생하였습니다.');
+        }
+        else {
+            electron_1.dialog.showErrorBox('오류', '알 수 없습니다. ' + status);
+        }
+        event.reply('login_failed');
+        return;
+    });
 });

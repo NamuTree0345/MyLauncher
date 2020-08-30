@@ -1,28 +1,39 @@
 import request from 'request'
 
+
 export class Auth {
-    GetAuthenticateRes(userName: String, password: String) : String {
-        request.post('https://authserver.mojang.com/authenticate', {
-            body: {
+    userData: any
+
+    GetAuthenticateRes(userName: String, password: String, callback: Function) : void {
+        request('https://authserver.mojang.com/authenticate', {
+            method: 'POST',
+            body: JSON.stringify({
                 "agent": {
                     "name": "Minecraft",
                     "version": 1
                 },
                 "username": userName,
                 "password": password
-            }
+            })
         }, (err, res, body) => {
+            
+            let stat: String = ''
+
             if(err) {
-                return "CanNotConnectException"
+                stat = 'CanNotConnectException'
             }
             let parsedResult: any = JSON.parse(body)
-            if(parsedResult.error === undefined) {
-                return "Success"
+            let error: any = parsedResult.error
+            console.log(error)
+            if(error == undefined) {
+                this.userData = parsedResult
+                stat = 'Success'
             } else {
-                return parsedResult.error
+                stat = 'CanNotConnectException'
             }
+
+            callback(stat)
             
         })
-        return "Unknown"
     }
 }

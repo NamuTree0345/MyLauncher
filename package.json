@@ -1,0 +1,20 @@
+{
+  "name": "mylauncher",
+  "version": "1.0.0",
+  "description": "MyLauncher for Minecraft",
+  "main": "main.js",
+  "author": "NamuTree0345",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc && electron ./dist/main.js"
+  },
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "@types/request": "^2.48.5",
+    "electron": "^10.1.0"
+  },
+  "dependencies": {
+    "minecraft-jml": "^0.2.4",
+    "request": "^2.88.2"
+  }
+}

@@ -6,7 +6,8 @@
   "author": "NamuTree0345",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && electron ./dist/main.js"
+    "start": "tsc && electron ./dist/main.js",
+    "runonly": "electron ./dist/main.js"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",
